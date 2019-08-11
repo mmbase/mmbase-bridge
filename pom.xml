@@ -72,16 +72,12 @@ But it has a few other things too:
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>org.mmbase.Version</mainClass>
-            </manifest>
             <manifestEntries>
               <url>${project.url}</url>
             </manifestEntries>
             <manifestSections>
               <manifestSection>
-                <name>org/mmbase</name>
+                <name>org/mmbase/bridge/</name>
                 <manifestEntries>
                   <Vendor>MMBase Community</Vendor>
                   <URL>http://www.mmbase.org</URL>
@@ -104,6 +100,10 @@ But it has a few other things too:
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.mmbase.maven</groupId>
+        <artifactId>mmbase-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
