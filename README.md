@@ -1,4 +1,10 @@
 # MMBase Bridge Interface
+
+[![Build Status](https://travis-ci.org/mmbase/mmbase-utils.svg?)](https://travis-ci.org/mmbase/mmbase-bridge)
+[![snapshots](https://img.shields.io/nexus/s/https/oss.sonatype.org/org.mmbase/mmbase-bridge.svg)](https://oss.sonatype.org/content/repositories/staging/org/mmbase/mmbase-bridge)
+[![Maven Central](https://img.shields.io/maven-central/v/org.mmbase/mmbase-bridge.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22org.mmbase%22)
+
+
 <p>
 MMBase Bridge is a part of MMBase, but can also be used in
 other projects. Its main goal is to contain the 'bridge' api to talk to MMBase.
