@@ -10,19 +10,26 @@ See http://www.MMBase.org/license
 
 package org.mmbase.bridge.util;
 
-import java.io.*;
-import java.util.StringTokenizer;
-import java.util.Stack;
-import java.net.*;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.http.HttpSession;
-import org.mmbase.bridge.*;
+import org.mmbase.bridge.Cloud;
+import org.mmbase.bridge.Node;
+import org.mmbase.bridge.NodeManager;
+import org.mmbase.bridge.NotFoundException;
+import org.mmbase.cache.Cache;
+import org.mmbase.util.MMBaseContext;
 import org.mmbase.util.ResourceLoader;
-import org.mmbase.util.functions.*;
-import org.mmbase.cache.*;
+import org.mmbase.util.functions.Function;
+import org.mmbase.util.functions.Parameter;
+import org.mmbase.util.functions.Parameters;
 import org.mmbase.util.logging.Logger;
 import org.mmbase.util.logging.Logging;
-import org.mmbase.util.MMBaseContext;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 /**
  * This helper-class has all Tree- and Leaf-related functionality. The algorithms that find the
@@ -87,7 +94,7 @@ public class TreeHelper {
      * @param objectlist The list of objectnumbers (comma-seperated) that is used to find the correct file to include
      * @param session The session context can contain version information (used in getVerion).
      */
-    public String findLeafFile(String includePage, String objectlist, HttpSession session) throws JspTagException, IOException {
+    public String findLeafFile(String includePage, String objectlist, HttpSession session) throws  IOException {
         if ("".equals(objectlist) || objectlist == null) {
             return encodedPath(includePage);
         }
@@ -108,14 +115,14 @@ public class TreeHelper {
         }
     }
 
-    private String getKey(Node n, String prefix, String objectlist, String includePage, boolean maySmartPath, HttpSession session ) throws JspTagException {
+    private String getKey(Node n, String prefix, String objectlist, String includePage, boolean maySmartPath, HttpSession session ) {
         StringBuilder buf = new StringBuilder();
         if (n != null) buf.append(n.getNumber());
         buf.append(':').append(prefix).append(':').append(objectlist).append(':').append(includePage).append(':').append(maySmartPath).append(':');
         getVersionKey(buf, session);
         return buf.toString();
     }
-    private String getTreeFileKey(String includePage, String objectlist, HttpSession session) throws JspTagException {
+    private String getTreeFileKey(String includePage, String objectlist, HttpSession session) {
         StringBuilder buf = new StringBuilder();
         buf.append(objectlist).append(':').append(includePage).append(':');
         getVersionKey(buf, session);
@@ -133,7 +140,7 @@ public class TreeHelper {
      * @param maySmartpath Boolean indicating whether or not getLeafFile may call a 'getSmartpath' on the given objects
      * @param prefix The path that was already established by previous calls to getLeafFile, deeper in the recursion tree.
      */
-    private String getLeafFile(String prefix, String objectlist, final String includePage, boolean maySmartpath, HttpSession session) throws JspTagException, IOException {
+    private String getLeafFile(String prefix, String objectlist, final String includePage, boolean maySmartpath, HttpSession session) throws  IOException {
 
         if (log.isDebugEnabled()) {
             log.debug("prefix: " + prefix + " objectlist: " + objectlist + " includePage " + includePage);
@@ -260,13 +267,13 @@ public class TreeHelper {
      * @param session The session context can contain version information (used in getVersion).
      * TODO: add support for 'intermediate paths' as LeafInclude has.
      */
-    public String findTreeFile(String includePage, String objectlist, HttpSession session) throws JspTagException, IOException {
+    public String findTreeFile(String includePage, String objectlist, HttpSession session) throws IOException, ServletException {
         final String key = getTreeFileKey(includePage, objectlist, session);
         String result = cache.get(key);
         if (result != null) return result;
 
         if (cloud == null) {
-            throw new JspTagException("Cloud was not defined");
+            throw new ServletException("Cloud was not defined");
         }
 
         if (log.isDebugEnabled()) {
@@ -355,10 +362,10 @@ public class TreeHelper {
      * By setting a sessions variable with name = object type and value = number,
      * will affect the getSmartpath method by adding the number to the end of the found smartpath.
      * Only if the object type corresponds to the object type of which the smartpath is evaluated.
-     * @param objectnumber the objectnumber used in the smartpath
+     * @param n the objectnumber used in the smartpath
      * @return a versionnumber, or an empty string otherwise.
      */
-    private String getVersion(Node n, HttpSession session) throws JspTagException {
+    private String getVersion(Node n, HttpSession session)  {
         if (ignoreVersions || n == null || session == null) {
             // No session variable set
             return "";
@@ -373,10 +380,10 @@ public class TreeHelper {
 
     /**
      * gets the object type name of an object.
-     * @param objectnumber the object number of which you want the object type name
+     * @param n the object number of which you want the object type name
      * @return the object type
      */
-    private String getBuilderName(Node n) throws JspTagException {
+    private String getBuilderName(Node n) {
         return n.getNodeManager().getName();
     }
 
@@ -386,7 +393,7 @@ public class TreeHelper {
      * @param middle the path already evaluated (this is not used in current code).
      * @return the smartpath
      */
-    private String getSmartPath(Node n, String middle, HttpSession session) throws JspTagException {
+    private String getSmartPath(Node n, String middle, HttpSession session) {
         String version = getVersion(n, session);
         Function f = n.getFunction("smartpath");
         Parameters params = f.createParameters();

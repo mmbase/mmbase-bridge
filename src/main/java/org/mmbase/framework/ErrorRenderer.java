@@ -9,18 +9,23 @@
 */
 package org.mmbase.framework;
 
-import java.util.*;
-import java.util.regex.*;
-
-import javax.servlet.http.*;
-import javax.servlet.jsp.*;
-import javax.servlet.*;
-import java.io.*;
 import org.mmbase.bridge.NotFoundException;
-import org.mmbase.util.functions.*;
-import org.mmbase.util.transformers.*;
+import org.mmbase.util.functions.Parameter;
+import org.mmbase.util.functions.Parameters;
 import org.mmbase.util.logging.Logger;
 import org.mmbase.util.logging.Logging;
+import org.mmbase.util.transformers.CharTransformer;
+import org.mmbase.util.transformers.Xml;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * If rendering of a {@link Block} fails for some reason this renderer should be used to present the error.
@@ -132,10 +137,6 @@ public class ErrorRenderer extends AbstractRenderer {
                 }
                 if (e instanceof ServletException) {
                     Throwable t = ((ServletException) e).getRootCause();
-                    if (t == null) t = e.getCause();
-                    e = t;
-                } else if (e instanceof javax.servlet.jsp.JspException) {
-                    Throwable t = ((JspException) e).getRootCause();
                     if (t == null) t = e.getCause();
                     e = t;
                 } else {
