@@ -105,25 +105,6 @@ But it has a few other things too:
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.mmbase.maven</groupId>
-        <artifactId>mmbase-maven-plugin</artifactId>
-        <version>2.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <id>create-index-files</id>
-            <goals>
-              <goal>create-index-files</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>copy-web-resources</id>
-            <goals>
-              <goal>install-resources</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <dependencyManagement>
