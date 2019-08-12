@@ -10,12 +10,13 @@ See http://www.MMBase.org/license
 package org.mmbase.util;
 
 
-import java.net.URL;
-import java.util.*;
-import java.io.*;
+import org.junit.Test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import java.net.URL;
+import java.util.Set;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 /**
  * Test the working of the ResourceLoader.
  *
