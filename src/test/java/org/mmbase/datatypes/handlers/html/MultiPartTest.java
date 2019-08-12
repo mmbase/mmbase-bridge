@@ -10,14 +10,18 @@ See http://www.MMBase.org/license
 
 package org.mmbase.datatypes.handlers.html;
 
-import java.io.ByteArrayOutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 import org.mmbase.util.SerializableInputStream;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @version $Id$
@@ -42,8 +46,16 @@ public  class MultiPartTest {
     @Test
     public void basic() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        //request.setContentType("multipart/form-data;  boundary=" + BOUNDARY);
-        //request.setContent(getContent());
+        when(request.getContentType()).thenReturn("multipart/form-data;  boundary=" + BOUNDARY);
+
+        when(request.getInputStream()).thenReturn(new ServletInputStream() {
+            InputStream inputStream = new ByteArrayInputStream(getContent());
+            @Override
+            public int read() throws IOException {
+                return inputStream.read();
+
+            }
+        });
 
         System.out.println("" + request.getInputStream());
 
