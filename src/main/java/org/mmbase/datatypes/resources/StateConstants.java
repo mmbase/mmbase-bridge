@@ -21,10 +21,10 @@ package org.mmbase.datatypes.resources;
  */
 public interface StateConstants {
 
-    static final int UNKNOWN = -1;
-    static final int ACTIVE = 1;
-    static final int INACTIVE = 2;
-    static final int ERROR = 3;
+    int UNKNOWN = -1;
+    int ACTIVE = 1;
+    int INACTIVE = 2;
+    int ERROR = 3;
 
 }
 
