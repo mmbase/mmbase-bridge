@@ -8,8 +8,6 @@ See http://www.MMBase.org/license
 
 */
 package org.mmbase.util;
-import java.util.*;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mmbase.bridge.Cloud;
@@ -20,12 +18,14 @@ import org.mmbase.bridge.util.BridgeCaster;
 import org.mmbase.util.transformers.CopyCharTransformer;
 import org.mmbase.util.transformers.Xml;
 
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 /**
  *
  * @author Michiel Meeuwissen
- * @verion $Id$
+ * @version $Id$
  */
 public class CastingTest  {
 
