@@ -53,6 +53,7 @@ But it has a few other things too:
   </scm>
 
   <build>
+    <defaultGoal>package</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
